@@ -3,37 +3,46 @@ import 'vue3-carousel/carousel.css'
 import {Carousel, Slide, Pagination, Navigation} from "vue3-carousel";
 import RecommendationCard from "~/components/content/recommendations/RecommendationCard.vue";
 
-const slides = Array.from({length: 4}, (_, index) => {
-  const data = [
-    {
-      url: 'https://images.immediate.co.uk/production/volatile/sites/2/2021/03/Toad-In-The-Hole-fadbeab.jpg?quality=90&webp=true&resize=900,600',
-      description: 'Classic toad-in-the-hole with sausages baked in Yorkshire pudding batter.'
-    },
-    {
-      url: 'https://media.istockphoto.com/id/1457433817/photo/group-of-healthy-food-for-flexitarian-diet.jpg?s=612x612&w=0&k=20&c=v48RE0ZNWpMZOlSp13KdF1yFDmidorO2pZTu2Idmd3M=',
-      description: 'Fluffy and golden — a comfort food classic served with gravy.'
-    },
-    {
-      url: 'https://img.freepik.com/free-photo/top-view-table-full-food_23-2149209253.jpg?semt=ais_hybrid&w=740',
-      description: 'Family-sized toad-in-the-hole, perfect for a hearty dinner.'
-    },
-    {
-      url: 'https://food.fnr.sndimg.com/content/dam/images/food/plus/fullset/2021/01/19/0/FNKLIve_Megan-Mitchell_Meal-Prep-Farro-and-Quinoa-Veggie-Bowls_s4x3.jpg.rend.hgtvcom.1280.1280.suffix/1611075895651.webp',
-      description: 'Mini toad-in-the-hole portions — ideal for kids or party platters.'
-    }
-  ];
-  return {
-    id: index + 1,
-    url: data[index].url,
-    description: data[index].description,
+const slides = ref([
+  {
+    id: 8,
+    url: 'https://images.unsplash.com/photo-1551218808-94e220e084d2',
+    name: 'Loaded Nachos',
+    description: 'Loaded Nachos with cheese, beans, and jalapeños.',
+    level: 2,
+    time: 40,
+    comments: 11,
+    hearts: 35,
+    foodType: 'Snack',
+    country: 'Mexico',
+  },
+  {
+    id: 9,
+    url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRALAGFcVj2zAWMAViVc4z4RQAFQFvO5sKSKw&s',
+    name: 'Chocolate Lava Cake',
+    description: 'Chocolate Lava Cake with vanilla ice cream.',
+    level: 1,
+    time: 10,
+    comments: 17,
+    hearts: 52,
+    foodType: 'Dessert',
+    country: 'France',
+  },
+  {
+    id: 10,
+    url: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd',
+    name: 'Buddha Bowl',
+    description: 'Healthy Buddha Bowl with quinoa, chickpeas, and greens.',
+    level: 2,
+    time: 25,
+    comments: 5,
+    hearts: 29,
+    foodType: 'Bowl',
+    country: 'Fusion',
   }
-});
+]);
 
-const activeSlide = ref(0);
-
-const getActiveSlide = (slideId: number) => {
-  return activeSlide.value == slideId;
-}
+const activeSlide = ref<number>(0);
 
 const carouselConfig = {
   wrapAround: true,
@@ -58,8 +67,8 @@ const carouselConfig = {
         v-bind="carouselConfig"
         v-model="activeSlide"
         class="relative w-full h-96 shrink-0 rounded-lg">
-      <Slide v-for="slide in slides" :key="slide.id">
-        <RecommendationCard :img-url="slide.url" :description="slide.description" :activeSlide="getActiveSlide(slide.id - 1)" class="cursor-pointer"/>
+      <Slide v-for="(slide, index) in slides" :key="slide.id">
+        <RecommendationCard :img-url="slide.url" :description="slide.description" :time="slide.time" :activeSlide="activeSlide == index" class="cursor-pointer"/>
       </Slide>
       <template #addons>
         <Pagination/>

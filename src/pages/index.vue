@@ -146,6 +146,7 @@ const {goToPage, paginatedItems, paginationRange} = usePagination(cards, 2, 5, c
 <template>
   <div class="w-full h-full">
     <section>
+      <h2 id="recipes" class="font-bold text-4xl text-primary mb-5">Daily Recommendations</h2>
       <Recommendations/>
     </section>
     <section aria-labelledby="recipes" class="mt-5 mb-5">
