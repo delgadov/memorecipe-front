@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="150"
+   height="42.056"
+   viewBox="0 0 150 42.056"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <rect
+       x="-39.039623"
+       y="-4.0772452"
+       width="144.53835"
+       height="43.932316"
+       id="rect3" />
+  </defs>
+  <g
+     id="layer1"
+     transform="translate(-1.2808664,-16.599157)">
+    <text
+       xml:space="preserve"
+       transform="translate(1.2808664,16.599157)"
+       id="text3"
+       style="text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect3);fill:#000000" />
+    <text
+       xml:space="preserve"
+       style="text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000"
+       x="21.157436"
+       y="32.296551"
+       id="text4"><tspan
+         id="tspan4"
+         x="21.157436"
+         y="32.296551" /></text>
+    <text
+       xml:space="preserve"
+       style="font-size:21.8283px;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#333333;fill-opacity:1;stroke-width:1.81904"
+       x="-0.13583645"
+       y="43.511978"
+       id="text5"
+       transform="scale(0.97356962,1.0271479)"><tspan
+         id="tspan5"
+         x="-0.13583645"
+         y="43.511978"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Bodoni MT';-inkscape-font-specification:'Bodoni MT';fill:#333333;fill-opacity:1;stroke-width:1.81904">MEMO RECIPE</tspan></text>
+  </g>
+</svg>
