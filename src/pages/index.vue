@@ -168,8 +168,8 @@ const {goToPage, paginatedItems, paginationRange} = usePagination(cards, 2, 5, c
       </button>
       <button v-for="i in paginationRange"
               :class="[
-                  'w-15 font-medium  rounded-md border border-primary text-sm py-1.5 px-3 disabled:opacity-40 cursor-pointer hover:bg-primary/10',
-                  currentPage == i ? 'bg-primary-dark text-white' : 'bg-transparent text-primary'
+                  'w-15 font-medium  rounded-md border border-primary text-sm py-1.5 px-3 disabled:opacity-40 cursor-pointer',
+                  currentPage == i ? 'bg-primary-dark text-white' : 'bg-transparent text-primary hover:bg-primary/10'
               ]"
               @click="goToPage(i)"
       >
