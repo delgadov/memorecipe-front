@@ -40,7 +40,9 @@ defineProps<{
   <div class="w-full h-full bg-primary-light shadow-2xs/10 grid grid-cols-2 rounded-2xl">
     <div class="w-full h-full sm:h-48 md:h-64">
       <LazyNuxtImg :src="imgUrl" alt="Recipe image for {{ recipeName }}"
-                   class="w-full h-full object-cover rounded-l-2xl"/>
+                   class="w-full h-full object-cover rounded-l-2xl"
+                   loading="lazy"
+                   placeholder/>
     </div>
     <div class="grid grid-rows-[auto_auto_1fr_auto_auto] gap-2 p-4">
       <h3 class="text-xl font-bold text-primary col-span-2 flex items-center">{{ recipeName }}</h3>
