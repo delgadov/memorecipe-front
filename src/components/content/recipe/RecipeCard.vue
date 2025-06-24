@@ -6,21 +6,7 @@ import PlateIcon from "~/components/icons/PlateIcon.vue";
 import MapIcon from "~/components/icons/MapIcon.vue";
 import ChatIcon from "~/components/icons/ChatIcon.vue";
 import FavoriteButton from "~/components/header/FavoriteButton.vue";
-
-const formatMinutesAsHoursAndMinutes = (minutes: number): string => {
-  const hours = Math.floor((minutes / 60));
-
-  if (hours == 0) {
-    return minutes + "m";
-  }
-
-  const remainingMinutes = minutes % 60;
-  if (remainingMinutes === 0) {
-    return hours + "h";
-  }
-
-  return hours + "hr " + remainingMinutes + "min";
-}
+import {useTimeFormat} from "#imports";
 
 defineProps<{
   imgUrl: string,
@@ -33,6 +19,8 @@ defineProps<{
   comments: number,
   hearts: number
 }>();
+
+const {formatMinutesAsHoursAndMinutes} = useTimeFormat();
 
 </script>
 
