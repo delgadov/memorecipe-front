@@ -139,7 +139,7 @@ const cards = ref([
     ]
 );
 
-const {goToPage, paginatedItems, paginationRange} = usePagination(cards, 2, 5, currentPage);
+const {goToPage, paginatedItems, paginationRange} = usePagination(cards, 4, 5, currentPage);
 
 </script>
 
