@@ -25,7 +25,7 @@ const {formatMinutesAsHoursAndMinutes} = useTimeFormat();
 
 <template>
   <div class="w-full h-full bg-primary-light shadow-2xs/10 grid grid-cols-2 rounded-2xl hover:cursor-pointer">
-    <div class="w-full h-full sm:h-48 md:h-64">
+    <div class="w-full sm:h-48 md:h-64">
       <LazyNuxtImg :src="imgUrl" alt="Recipe image for {{ recipeName }}"
                    class="w-full h-full object-cover rounded-l-2xl"
                    loading="lazy"
@@ -47,7 +47,7 @@ const {formatMinutesAsHoursAndMinutes} = useTimeFormat();
       <div>
         <span class="text-xs text-gray-500">Time</span>
         <p class="flex gap-1 items-center text-xs text-primary">
-          <ClockIcon/>
+          <ClockIcon fill="black"/>
           {{ formatMinutesAsHoursAndMinutes(timeInMinutes) }}
         </p>
       </div>

@@ -51,11 +51,11 @@ const carouselConfig = {
   gap: 10,
   breakpointsMode: "viewport",
   breakpoints: {
-    400: {
-      itemsToShow: 1.5,
+    350: {
+      itemsToShow: 1,
     },
     700: {
-      itemsToShow: 2.5,
+      itemsToShow: 2,
     },
   }
 };
@@ -66,9 +66,9 @@ const carouselConfig = {
     <Carousel
         v-bind="carouselConfig"
         v-model="activeSlide"
-        class="relative w-full h-96 shrink-0 rounded-lg">
+        class="relative w-full h-96 shrink-0 rounded-lg p-1">
       <Slide v-for="(slide, index) in slides" :key="slide.id">
-        <RecommendationCard :img-url="slide.url" :description="slide.description" :time="slide.time" :activeSlide="activeSlide == index" class="cursor-pointer"/>
+        <RecommendationCard :img-url="slide.url" :description="slide.description" :likes="slide.hearts" :time="slide.time" :activeSlide="activeSlide == index" class="cursor-pointer"/>
       </Slide>
       <template #addons>
         <Pagination/>
