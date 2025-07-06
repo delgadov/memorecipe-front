@@ -8,7 +8,7 @@ import ChatIcon from "~/components/icons/ChatIcon.vue";
 import {useTimeFormat} from "#imports";
 import RightArrow from "~/components/icons/RightArrow.vue";
 
-defineProps<{
+const props = defineProps<{
   imgUrl: string,
   recipeName: string,
   description: string,
@@ -45,16 +45,23 @@ const getDifficultyColor = (level: number) => {
       return "black";
   }
 }
+
+const isImageLoaded = ref(false);
 </script>
 
 <template>
   <div class="w-full h-full flex flex-col relative ">
     <!--    Image -->
-    <div class="w-full h-64 md:h-96 z-0 rounded-tl-2xl rounded-br-2xl overflow-hidden">
-      <LazyNuxtImg :src="imgUrl" alt="Recipe image for {{ recipeName }}"
-                   class="w-full h-full object-cover "
-                   loading="lazy"
-                   placeholder/>
+    <div class="relative w-full h-64 md:h-96 z-0 rounded-tl-2xl rounded-br-2xl overflow-hidden">
+      <NuxtImg :src="imgUrl"
+               alt="Recipe image for {{ recipeName }}"
+               class="w-full h-full object-cover"
+               loading="lazy"
+               placeholder
+               @load="isImageLoaded = true"/>
+      <Transition name="loadingBlur">
+        <div class="absolute inset-0 bg-primary-dark/10 backdrop-blur-sm" v-if="!isImageLoaded"/>
+      </Transition>
     </div>
     <!--    Overlay image-->
     <div class="absolute inset-0 bg-amber-900/15 z-1 rounded-tl-2xl rounded-br-2xl"/>
@@ -106,5 +113,15 @@ const getDifficultyColor = (level: number) => {
 </template>
 
 <style scoped>
+.loadingBlur-enter-active, .loadingBlur-leave-active {
+  transition: all 300ms ease;
+}
 
+.loadingBlur-enter-from, .loadingBlur-leave-to {
+  opacity: 0;
+}
+
+.loadingBlur-enter-to, .loadingBlur-leave-from {
+  opacity: 1;
+}
 </style>
