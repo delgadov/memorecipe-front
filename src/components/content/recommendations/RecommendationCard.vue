@@ -3,7 +3,7 @@
 import {useTimeFormat} from "#imports";
 import RightArrow from "~/components/icons/RightArrow.vue";
 import ClockIcon from "~/components/icons/ClockIcon.vue";
-import UpArrow from "~/components/icons/UpArrow.vue";
+import CaretIcon from "~/components/icons/CaretIcon.vue";
 
 const timeFormat = useTimeFormat();
 
@@ -36,7 +36,7 @@ defineProps<{
             {{ timeFormat.formatMinutesAsHoursAndMinutes(time) }}
           </span>
           <span class="inline-flex items-center gap-1">
-            <UpArrow/>
+            <CaretIcon stroke="white"/>
             {{ likes }}
           </span>
         </div>

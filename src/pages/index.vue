@@ -4,6 +4,8 @@ import Recommendations from "~/components/content/recommendations/Recommendation
 import RecipeCard from "~/components/content/recipe/RecipeCard.vue";
 import {useRoute, useRouter} from "#vue-router";
 import {usePagination} from "~/composables/usePagination";
+import UpArrowIcon from "~/components/icons/UpArrowIcon.vue";
+import ScrollToTopButton from "~/components/common/ScrollToTopButton.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -182,6 +184,8 @@ const {goToPage, paginatedItems, paginationRange} = usePagination(cards, 4, 5, c
         Next
       </button>
     </nav>
+
+    <ScrollToTopButton/>
   </div>
 </template>
 
