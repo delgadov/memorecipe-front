@@ -11,7 +11,7 @@
 
     function handleScroll() {
         let scrollY = window.scrollY;
-        showScrollToTop.value = scrollY > 300 && (scrollY < lastScrollY.value);
+        showScrollToTop.value = scrollY > 50;
         lastScrollY.value = scrollY;
     }
 
