@@ -1,6 +1,4 @@
 ﻿<script lang="ts" setup>
-
-import FireIcon from "~/components/icons/FireIcon.vue";
 import ClockIcon from "~/components/icons/ClockIcon.vue";
 import PlateIcon from "~/components/icons/PlateIcon.vue";
 import MapIcon from "~/components/icons/MapIcon.vue";
@@ -52,16 +50,18 @@ const isImageLoaded = ref(false);
 <template>
   <div class="w-full h-full flex flex-col relative ">
     <!--    Image -->
-    <div class="relative w-full h-64 md:h-96 z-0 rounded-tl-2xl rounded-br-2xl overflow-hidden">
-      <NuxtImg :src="imgUrl"
+    <div class="relative w-full h-64 md:h-96 z-0 rounded-tl-2xl rounded-br-2xl overflow-hidden bg-primary-dark/50">
+
+      <!--      Skeleton Loading-->
+      <div v-show="!isImageLoaded" class="absolute inset-0 bg-gray-200 animate-pulse"></div>
+      <NuxtImg
+          v-show="isImageLoaded"
+          :src="imgUrl"
                alt="Recipe image for {{ recipeName }}"
                class="w-full h-full object-cover"
                loading="lazy"
                placeholder
                @load="isImageLoaded = true"/>
-      <Transition name="loadingBlur">
-        <div class="absolute inset-0 bg-primary-dark/10 backdrop-blur-sm" v-if="!isImageLoaded"/>
-      </Transition>
     </div>
     <!--    Overlay image-->
     <div class="absolute inset-0 bg-amber-900/15 z-1 rounded-tl-2xl rounded-br-2xl"/>
@@ -123,5 +123,15 @@ const isImageLoaded = ref(false);
 
 .loadingBlur-enter-to, .loadingBlur-leave-from {
   opacity: 1;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
 }
 </style>
