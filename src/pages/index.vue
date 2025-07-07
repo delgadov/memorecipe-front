@@ -1,4 +1,4 @@
-﻿<script setup lang="ts">
+﻿<script lang="ts" setup>
 
 import Recommendations from "~/components/content/recommendations/Recommendations.vue";
 import RecipeCard from "~/components/content/recipe/RecipeCard.vue";
@@ -6,6 +6,7 @@ import {useRoute, useRouter} from "#vue-router";
 import {usePagination} from "~/composables/usePagination";
 import UpArrowIcon from "~/components/icons/UpArrowIcon.vue";
 import ScrollToTopButton from "~/components/common/ScrollToTopButton.vue";
+import FilterModal from "~/components/content/recipe/FilterModal.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -141,34 +142,45 @@ const cards = ref([
     ]
 );
 
-const {goToPage, paginatedItems, paginationRange} = usePagination(cards, 4, 5, currentPage);
+const {goToPage, paginatedItems, startPageIndex, endPageIndex, paginationRange} = usePagination(cards, 4, 5, currentPage);
 
 </script>
 
 <template>
   <div class="w-full h-full">
+    <!--    Daily Recommendations-->
     <section>
       <h2 id="recipes" class="font-bold text-4xl text-primary mb-5">Daily Recommendations</h2>
       <Recommendations/>
     </section>
+    <!--    Recipes-->
     <section aria-labelledby="recipes" class="mt-5 mb-5">
-      <h2 id="recipes" class="font-bold text-4xl text-primary mb-5">Recipes</h2>
+      <div class="flex justify-between items-center ">
+        <h2 id="recipes" class="font-bold text-4xl text-primary">Recipes</h2>
+
+      </div>
+      <div class="flex items-center  justify-end p-2">
+        <p class="text-xs text-gray-500">Showing {{ startPageIndex }} - {{ endPageIndex }} of {{ cards.length }}</p>
+      </div>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div v-for="card in paginatedItems" :key="card.id">
-          <RecipeCard :recipe-name="card.name" :img-url="card.url" :description="card.description" :level="card.level"
-                      :time-in-minutes="card.time" :comments="card.comments" :hearts="card.hearts"
-                      :country="card.country" :food-type="card.foodType"/>
+          <RecipeCard :comments="card.comments" :country="card.country" :description="card.description"
+                      :food-type="card.foodType"
+                      :hearts="card.hearts" :img-url="card.url" :level="card.level"
+                      :recipe-name="card.name" :time-in-minutes="card.time"/>
         </div>
       </div>
     </section>
 
     <!--    Pagination Control -->
-    <nav class="flex justify-center gap-2 overflow-x-auto" aria-label="Pagination">
+    <nav aria-label="Pagination" class="flex justify-center gap-2 overflow-x-auto">
+      <!--      Prev Button-->
       <button
-          @click="goToPage(currentPage - 1)"
-          class="w-15 bg-primary-dark font-medium text-white rounded-md border-primary-dark text-sm py-1.5 px-3 disabled:opacity-40 cursor-pointer hover:bg-primary">
+          class="w-15 bg-primary-dark font-medium text-white rounded-md border-primary-dark text-sm py-1.5 px-3 disabled:opacity-40 cursor-pointer hover:bg-primary"
+          @click="goToPage(currentPage - 1)">
         Prev
       </button>
+      <!--      Page Buttons-->
       <button v-for="i in paginationRange"
               :class="[
                   'w-15 font-medium  rounded-md border border-primary text-sm py-1.5 px-3 disabled:opacity-40 cursor-pointer',
@@ -178,13 +190,15 @@ const {goToPage, paginatedItems, paginationRange} = usePagination(cards, 4, 5, c
       >
         {{ i }}
       </button>
+      <!--      Next Button-->
       <button
-          @click="goToPage(currentPage + 1)"
-          class="w-15 bg-primary-dark font-medium text-white rounded-md border-primary-dark text-sm py-1.5 px-3 disabled:opacity-40 cursor-pointer hover:bg-primary">
+          class="w-15 bg-primary-dark font-medium text-white rounded-md border-primary-dark text-sm py-1.5 px-3 disabled:opacity-40 cursor-pointer hover:bg-primary"
+          @click="goToPage(currentPage + 1)">
         Next
       </button>
     </nav>
 
+    <!--    Scroll To Top Feature -->
     <ScrollToTopButton/>
   </div>
 </template>

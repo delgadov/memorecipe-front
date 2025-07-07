@@ -35,9 +35,19 @@
         }
     }
 
+    const startPageIndex = computed(() => {
+        return ((currentPage.value - 1) * itemsPerPage) + 1;
+    });
+    const endPageIndex = computed(() => {
+        let endIndex = currentPage.value * itemsPerPage;
+        return endIndex > data.value.length ? data.value.length : endIndex;
+    });
+
     return {
         paginationRange,
         paginatedItems,
+        startPageIndex,
+        endPageIndex,
         goToPage,
     }
 }
