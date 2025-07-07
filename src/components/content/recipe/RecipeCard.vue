@@ -100,7 +100,7 @@ const isImageLoaded = ref(false);
           </span>
         </div>
         <span
-            class="inline-flex items-center bg-primary-dark/80 text-xs font-medium rounded-full px-2 py-1 shadow-lg
+            class="inline-flex items-center bg-primary-dark/80 text-xs font-medium rounded-full px-3 py-2 shadow-lg
                       hover:opacity-80 hover:cursor-pointer">
             View Recipe
             <RightArrow/>
