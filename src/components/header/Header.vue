@@ -14,9 +14,9 @@ import FavoriteButton from "~/components/header/FavoriteButton.vue";
       <Logo class="shrink-0 cursor-pointer"/>
 
       <div class="flex gap-5">
-        <SearchInput class="cursor-pointer"/>
-        <FavoriteButton class="cursor-pointer"/>
-        <LoginButton class="cursor-pointer"/>
+        <SearchInput class="cursor-pointer hover:scale-105 transition-transform duration-200"/>
+        <FavoriteButton class="cursor-pointer hover:scale-105 transition-transform duration-200"/>
+        <LoginButton class="cursor-pointer hover:scale-105 transition-transform duration-200"/>
       </div>
     </div>
   </div>
