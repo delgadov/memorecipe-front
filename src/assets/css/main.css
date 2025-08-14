@@ -1,23 +1,26 @@
 ﻿@import "tailwindcss";
 
 :root {
-    --primary: #333333;                /* Dark gray for primary text/elements */
+    --primary: #333333; /* Dark gray for primary text/elements */
     --primary-rgb: 51, 51, 51;
 
-    --primary-dark: #1A1A1A;           /* Even darker gray */
+    --primary-dark: #1A1A1A; /* Even darker gray */
     --primary-dark-rgb: 26, 26, 26;
 
-    --primary-medium: #f3f3f3;         /* Medium gray for secondary text/elements */
+    --primary-medium: #f3f3f3; /* Medium gray for secondary text/elements */
     --primary-medium-rgb: 243, 243, 243;
 
-    --primary-light: #F8F8F8;          /* Very light gray/off-white for backgrounds */
+    --primary-light: #F8F8F8; /* Very light gray/off-white for backgrounds */
     --primary-light-rgb: 248, 248, 248;
 
-    --primary-contrast: #000000;       /* Black for strong contrast if needed */
+    --primary-contrast: #000000; /* Black for strong contrast if needed */
     --primary-contrast-rgb: 0, 0, 0;
 
     --font-family: 'Roboto', sans-serif;
+
+    --division-border: 2px solid rgba(var(--primary-rgb), 0.15);
 }
+
 @theme {
     --color-primary: var(--primary); /* Dark gray for primary text/elements */
     --color-primary-dark: var(--primary-dark); /* Even darker gray */
@@ -26,6 +29,47 @@
     --color-primary-contrast: var(--primary-contrast); /* Black for strong contrast if needed */
 }
 
+@layer utilities {
+    .range-slider::-webkit-slider-thumb {
+        @apply bg-primary w-4 h-4 rounded-full cursor-pointer;
+        -webkit-appearance: none;
+        margin-top: -4px;
+    }
+
+    .range-slider::-moz-range-thumb {
+        @apply bg-primary w-4 h-4 rounded-full cursor-pointer;
+        border: none;
+        -webkit-appearance: none;
+    }
+
+    .range-slider {
+        @apply w-full h-2 bg-gray-300 rounded-lg;
+        -webkit-appearance: none;
+    }
+
+    .range-slider::-webkit-slider-runnable-track {
+        @apply h-2 rounded bg-gray-300;
+    }
+
+    .range-slider::-moz-range-track {
+        @apply h-2 rounded bg-gray-300;
+    }
+
+    select {
+        @apply py-2 px-3
+    }
+
+    select option {
+        @apply py-1 px-2 bg-primary-light;
+        padding: 5px;
+    }
+
+    select option:checked {
+        @apply bg-primary-medium text-primary;
+    }
+}
+
 * {
     font-family: var(--font-family);
 }
+

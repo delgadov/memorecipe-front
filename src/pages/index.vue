@@ -143,7 +143,6 @@ const cards = ref([
 );
 
 const {goToPage, paginatedItems, startPageIndex, endPageIndex, paginationRange} = usePagination(cards, 4, 5, currentPage);
-
 </script>
 
 <template>
@@ -157,7 +156,9 @@ const {goToPage, paginatedItems, startPageIndex, endPageIndex, paginationRange} 
     <section aria-labelledby="recipes" class="mt-5 mb-5">
       <div class="flex justify-between items-center ">
         <h2 id="recipes" class="font-bold text-4xl text-primary">Recipes</h2>
-
+        <div class="flex">
+          <FilterModal/>
+        </div>
       </div>
       <div class="flex items-center  justify-end p-2">
         <p class="text-xs text-gray-500">Showing {{ startPageIndex }} - {{ endPageIndex }} of {{ cards.length }}</p>
