@@ -68,6 +68,7 @@ const countriesList = useCountriesList();
                    pattern="[0-9]*" placeholder="Time" type="number"/>
           </div>
         </section>
+        <!--        Countries-->
         <section class="p-4 flex flex-col gap-3">
           <label class="text-xl font-semibold text-primary" for="country">Countries</label>
           <div class="w-fit relative">
@@ -79,13 +80,15 @@ const countriesList = useCountriesList();
                         </select>-->
           </div>
         </section>
+        <!--        Difficulty-->
         <section class="p-4 flex flex-col gap-3">
           <label class="text-xl font-semibold text-primary" for="country">Difficulty</label>
           <div class="w-fit relative">
             <ul>
               <li>
                 <input id="easy" class="hidden-dot" name="difficulty" type="radio" value="easy">
-                <label for="easy" class="p-3 border border-green-600 rounded-lg bg-transparent cursor-pointer hover:font-bold">
+                <label class="p-3 border border-green-600 rounded-lg bg-transparent cursor-pointer hover:font-bold"
+                       for="easy">
                   <span class="text-xl text-green-600">
                     Easy
                   </span>

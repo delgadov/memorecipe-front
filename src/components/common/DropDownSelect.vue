@@ -39,24 +39,21 @@ const handleKeyDown = async (event: KeyboardEvent) => {
   if (event.key === "Enter") {
     showValues.value = false;
 
-  }
-  else if (event.key === "ArrowDown") {
+  } else if (event.key === "ArrowDown") {
     event.preventDefault();
     currentIndex.value = currentIndex.value + 1 > (props.data.length - 1) ? currentIndex.value : currentIndex.value + 1;
 
     await nextTick();
     const el = itemEls.value[currentIndex.value];
     scrollToElement(el);
-  }
-  else if (event.key === "ArrowUp") {
+  } else if (event.key === "ArrowUp") {
     event.preventDefault();
     currentIndex.value = currentIndex.value - 1 < 0 ? currentIndex.value : currentIndex.value - 1;
 
     await nextTick();
     const el = itemEls.value[currentIndex.value];
     scrollToElement(el);
-  }
-  else if (event.key.length === 1) {
+  } else if (event.key.length === 1) {
     searchBuffer += event.key;
     if (bufferTimeout) clearTimeout(bufferTimeout);
     bufferTimeout = setTimeout(() => {
@@ -96,15 +93,16 @@ onBeforeUpdate(() => {
 </script>
 
 <template>
-  <div class="relative select-none cursor-pointer text-md">
+  <div class="relative select-none cursor-pointer text-md z-99">
     <div ref="dropDownRef"
          :class="[
       'relative border-1 border-primary z-10 box-border',
       showValues ? 'rounded-t-lg' : 'rounded-lg'
 
   ]" @click="showValues =!showValues">
+      <!--      Dropdown-->
       <div class="grid grid-cols-[9fr_1fr]">
-        <div class="py-2 px-4 whitespace-nowrap text-ellipsis overflow-hidden ">
+        <div class="py-2 px-4 whitespace-nowrap text-ellipsis overflow-hidden">
           {{ currentValue }}
         </div>
         <div class="flex h-full w-5 right-2 inset-y-0 items-center pointer-events-none z-1 bg-primary-light">
@@ -115,6 +113,7 @@ onBeforeUpdate(() => {
         </div>
       </div>
     </div>
+    <!--    List-->
     <div v-show="showValues"
          class="absolute top-full right-0 left-0 h-min border-1 border-primary rounded-b-lg  bg-primary-light overflow-y-scroll  box-border">
       <ul class="flex flex-col max-h-[calc(2.52rem*5)]">
