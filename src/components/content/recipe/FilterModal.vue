@@ -72,11 +72,26 @@ const countriesList = useCountriesList();
           <label class="text-xl font-semibold text-primary" for="country">Countries</label>
           <div class="w-fit relative">
             <DropDownSelect :data="countriesList" class="w-65"/>
-<!--            <select id="country" class="appearance-none w-75 border border-primary rounded-lg shadow-sm focus:border-primary focus:border-1 focus:ring-primary"
-                    name="country">
-              <option value="Any">Any</option>
-              <option v-for="country in countriesList" :value="country">{{ country }}</option>
-            </select>-->
+            <!--            <select id="country" class="appearance-none w-75 border border-primary rounded-lg shadow-sm focus:border-primary focus:border-1 focus:ring-primary"
+                                name="country">
+                          <option value="Any">Any</option>
+                          <option v-for="country in countriesList" :value="country">{{ country }}</option>
+                        </select>-->
+          </div>
+        </section>
+        <section class="p-4 flex flex-col gap-3">
+          <label class="text-xl font-semibold text-primary" for="country">Difficulty</label>
+          <div class="w-fit relative">
+            <ul>
+              <li>
+                <input id="easy" class="hidden-dot" name="difficulty" type="radio" value="easy">
+                <label for="easy" class="p-3 border border-green-600 rounded-lg bg-transparent cursor-pointer hover:font-bold">
+                  <span class="text-xl text-green-600">
+                    Easy
+                  </span>
+                </label>
+              </li>
+            </ul>
           </div>
         </section>
       </template>
@@ -102,6 +117,15 @@ input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.hidden-dot {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: transparent;
+  border: none;
+  outline: none;
 }
 
 input[type='number'] {

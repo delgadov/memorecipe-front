@@ -121,7 +121,7 @@ onBeforeUpdate(() => {
         <li v-for="value in data"
             :ref="setItemRef"
             :class="[
-                'py-3 px-3 hover:bg-primary/10 cursor-pointer',
+                'py-2 px-4 hover:bg-primary/10 cursor-pointer',
                 currentValue === value ? 'bg-primary/20' : 'bg-primary-light',
                 ]"
             :data-value="String(value)" @click="currentValue = String(value)">{{ value }}

@@ -34,17 +34,30 @@ const getDifficultyText = (level: number): string => {
 const getDifficultyColor = (level: number) => {
   switch (level) {
     case 1:
-      return "text-green-600";
+      return "text-green-100";
     case 2:
-      return "text-yellow-600";
+      return "text-yellow-100";
     case 3:
-      return "text-red-600";
+      return "text-red-100";
     default:
       return "black";
   }
 }
 
-const isImageLoaded = ref(false);
+const getOverlayDifficultyColor = (level: number) => {
+  switch (level) {
+    case 1:
+      return "bg-green-600/40";
+    case 2:
+      return "bg-yellow-600/40";
+    case 3:
+      return "bg-red-600/40";
+    default:
+      return "black";
+  }
+}
+
+  const isImageLoaded = ref(false);
 </script>
 
 <template>
@@ -57,11 +70,11 @@ const isImageLoaded = ref(false);
       <NuxtImg
           v-show="isImageLoaded"
           :src="imgUrl"
-               alt="Recipe image for {{ recipeName }}"
-               class="w-full h-full object-cover"
-               loading="lazy"
-               placeholder
-               @load="isImageLoaded = true"/>
+          alt="Recipe image for {{ recipeName }}"
+          class="w-full h-full object-cover"
+          loading="lazy"
+          placeholder
+          @load="isImageLoaded = true"/>
     </div>
     <!--    Overlay image-->
     <div class="absolute inset-0 bg-amber-900/15 z-1 rounded-tl-2xl rounded-br-2xl"/>
@@ -70,9 +83,12 @@ const isImageLoaded = ref(false);
          style="background: linear-gradient(180deg, rgba(248,248,248,0) 0%, rgba(51,51,51,0.7) 100%);"/>
 
     <!-- Difficulty Badge -->
-    <div class="absolute top-2 left-3 px-3 py-1 rounded-full backdrop-blur-sm bg-primary-light/90">
+    <div :class="[
+        'absolute top-2 left-3 px-3.5 py-1.5 rounded-lg backdrop-blur-sm',
+        `${getOverlayDifficultyColor(level)}`
+        ]">
       <p :class="[
-        'text-xs font-bold',
+        'text-xs',
         `${getDifficultyColor(level)}`]">{{ getDifficultyText(level) }}</p>
     </div>
 
