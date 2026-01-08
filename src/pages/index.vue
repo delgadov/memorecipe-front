@@ -18,6 +18,7 @@ watch(currentPage, (val) => {
   router.replace({query: {...route.query, page: val.toString()}});
 });
 
+
 const cards = ref([
       {
         id: 1,
@@ -142,7 +143,13 @@ const cards = ref([
     ]
 );
 
-const {goToPage, paginatedItems, startPageIndex, endPageIndex, paginationRange} = usePagination(cards, 4, 5, currentPage);
+const {
+  goToPage,
+  paginatedItems,
+  startPageIndex,
+  endPageIndex,
+  paginationRange
+} = usePagination(cards, 4, 5, currentPage);
 </script>
 
 <template>

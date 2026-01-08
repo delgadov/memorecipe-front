@@ -2,7 +2,7 @@
 
 import CloseIcon from "~/components/icons/CloseIcon.vue";
 
-defineProps<{
+const props = defineProps<{
   showModal: boolean,
   modalName: string,
 }>();
@@ -11,19 +11,31 @@ const emit = defineEmits<{
   (e: 'update:showModal', value: boolean): void;
 }>();
 
+watch(() => props.showModal, (isOpen: boolean) => {
+  if (isOpen) {
+    document.body.style.overflowY = 'hidden';
+  } else {
+    document.body.style.overflowY = '';
+  }
+});
+
+onUnmounted(() => {
+  document.body.style.overflowY = '';
+})
+
 const closeModal = () => emit('update:showModal', false);
 </script>
 
 <template>
   <Transition name="appear">
-    <div v-show="showModal" class="fixed flex justify-center items-center inset-0 z-50">
+    <div v-show="showModal" class="fixed flex justify-center lg:items-center inset-0 z-50 overflow-y-auto">
 
       <!--        Overlay-->
       <div class="fixed flex justify-center items-center inset-0 bg-gray-700/50 z-49"
            @click.self="closeModal()"/>
 
       <!--        Window-->
-      <div class="relative w-128 h-min bg-primary-light z-50 rounded-md">
+      <div class="relative w-128 h-min max-h-[100%] flex flex-col bg-primary-light z-50 lg:rounded-xl ">
         <div class="p-4 border-b border-b-primary/30">
           <div class="w-full h-min flex items-center justify-center">
             <p class="text-2xl font-bold text-primary">{{ modalName }}</p>
@@ -38,7 +50,9 @@ const closeModal = () => emit('update:showModal', false);
         </div>
 
         <!--        content-->
-        <slot name="content"/>
+        <div class="overflow-y-auto flex-grow]">
+          <slot name="content"/>
+        </div>
 
         <!--        Footer-->
         <div class="border-t border-t-primary/30 p-4">

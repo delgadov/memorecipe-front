@@ -3,11 +3,14 @@
 import type {ReturnType} from "birpc";
 
 const props = defineProps<{
-  data: Array<any>
+  data: Array<any>,
+  modelValue?: string
 }>();
 
+const emit = defineEmits(['update:modelValue']);
+
 const showValues = ref<boolean>(false);
-const currentValue = ref<string | number>(props.data[0]);
+const currentValue = ref<string | number>(props.modelValue || props.data[0]);
 
 let searchBuffer = "";
 let bufferTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -28,7 +31,19 @@ const handleClickOutside = (event: MouseEvent) => {
 
 watch(currentValue, (newCurrentValue) => {
   currentIndex.value = itemEls.value.findIndex((li) => li?.dataset?.value === newCurrentValue);
+
+  emit("update:modelValue", newCurrentValue);
 });
+
+// Watch for any change coming from the parent such as filter and set it back to default
+watch(() => props.modelValue, (newValue) => {
+  const targetValue = newValue == undefined ? props.data[0] : newValue;
+
+  if (targetValue !== currentValue) {
+    currentValue.value = targetValue;
+  }
+});
+
 watch(currentIndex, (newCurrentIndex) => {
   currentValue.value = props.data[newCurrentIndex];
 })
