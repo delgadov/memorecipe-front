@@ -19,6 +19,12 @@
     --font-family: 'Roboto', sans-serif;
 
     --division-border: 2px solid rgba(var(--primary-rgb), 0.15);
+
+    --dark-selected: oklch(0.373 0.034 259.733);
+    --dark-unselected: oklch(0.707 0.022 261.325);
+    --dark-default: oklch(0.551 0.027 264.364);
+    --gray-light: oklch(0.929 0.013 255.508);
+
 }
 
 @theme {
@@ -27,6 +33,10 @@
     --color-primary-medium: var(--primary-medium); /* Medium gray for secondary text/elements */
     --color-primary-light: var(--primary-light); /* Very light gray/off-white for backgrounds */
     --color-primary-contrast: var(--primary-contrast); /* Black for strong contrast if needed */
+    --color-gray-selected: var(--dark-selected);
+    --color-gray-unselected: var(--dark-unselected);
+    --color-gray-default: var(--dark-default);
+    --color-gray-light: var(--gray-light);
 }
 
 @layer utilities {
@@ -67,9 +77,46 @@
     select option:checked {
         @apply bg-primary-medium text-primary;
     }
+
+    .hover-scrollbar {
+        /* Standard properties for Firefox */
+        scrollbar-width: thin;
+        scrollbar-color: transparent transparent;
+        transition: scrollbar-color 0.3s ease;
+        scrollbar-gutter: stable both-edges;
+
+        &::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: transparent;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        &:hover {
+            scrollbar-color: var(--color-gray-unselected) transparent; /* Firefox */
+
+            &::-webkit-scrollbar-thumb {
+                background-color: var(--color-gray-unselected); /* Webkit */
+            }
+        }
+    }
 }
 
 * {
     font-family: var(--font-family);
+}
+
+.no-select {
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 

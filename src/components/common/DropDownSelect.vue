@@ -90,7 +90,6 @@ const scrollToElement = (el?: HTMLElement | HTMLLIElement) => {
   el.scrollIntoView({block: 'nearest', inline: 'nearest', behavior: 'instant'});
 };
 
-
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
   document.addEventListener('keydown', handleKeyDown);

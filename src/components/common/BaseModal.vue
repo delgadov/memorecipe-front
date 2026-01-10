@@ -35,7 +35,7 @@ const closeModal = () => emit('update:showModal', false);
            @click.self="closeModal()"/>
 
       <!--        Window-->
-      <div class="relative w-128 h-min max-h-[100%] flex flex-col bg-primary-light z-50 lg:rounded-xl ">
+      <div class="relative w-128 max-w-[100%] h-min max-h-[100%] flex flex-col bg-primary-light z-50 lg:rounded-xl">
         <div class="p-4 border-b border-b-primary/30">
           <div class="w-full h-min flex items-center justify-center">
             <p class="text-2xl font-bold text-primary">{{ modalName }}</p>
@@ -50,7 +50,7 @@ const closeModal = () => emit('update:showModal', false);
         </div>
 
         <!--        content-->
-        <div class="overflow-y-auto flex-grow]">
+        <div class="overflow-y-auto flex-grow hover-scrollbar">
           <slot name="content"/>
         </div>
 

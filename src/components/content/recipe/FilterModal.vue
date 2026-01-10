@@ -3,25 +3,36 @@ import BaseModal from "~/components/common/BaseModal.vue";
 import {useCountriesList, useTimeSlider} from "#imports";
 import DropDownSelect from "~/components/common/DropDownSelect.vue";
 import {useRoute, useRouter} from "#vue-router";
-import FastWatch from "~/components/icons/FastWatch.vue";
-import PanIcon from "~/components/icons/PanIcon.vue";
-import ChefHatIcon from "~/components/icons/ChefHatIcon.vue";
-import CakeMakerIcon from "~/components/icons/CakeMakerIcon.vue";
 import SeedlingIcon from "~/components/icons/SeedlingIcon.vue";
 import CarrotIcon from "~/components/icons/CarrotIcon.vue";
 import GlutenFreeIcon from "~/components/icons/GlutenFreeIcon.vue";
 import DairyFreeIcon from "~/components/icons/DairyFreeIcon.vue";
-import {LOGICAL_OPERATORS} from "@babel/types";
+import {useHorizontalScroll} from "~/composables/useHorizontalScroll";
 
-let quick = 15;
-let standard = 35;
-let chef = 60;
-let slow = 9999;
-let DIET_VEGAN = "vegan";
-let DIET_VEGETARIAN = "vegetarian";
-let DIET_DAIRYFREE = "dairy_free";
-let DIET_GLUTENFREE = "gluten_free";
+const PREP_OPTIONS = [
+  {label: '< 15 min', value: "15"},
+  {label: '15-30 min', value: "35"},
+  {label: '30-60 min', value: "60"},
+  {label: '1hr +', value: "999"}
+];
 
+const DIETARY_TYPE_OPTIONS_2 = [
+  {label: 'Vegan', icon: 'mdi:leaf', value: "vegan"},
+  {label: 'Vegetarian', icon: 'mdi:seed', value: "vegetarian"},
+  {label: 'Gluten Free', icon: 'mdi:grain-off', value: "gluten-free"},
+  {label: 'Dairy Free', icon: 'mdi:cup-off', value: "dairy-free"}, // Replaced cow-off with cup-off for better compatibility
+  {label: 'Low Carb', icon: 'mdi:chart-bell-curve', value: "low-carb"},
+  {label: 'Pescetarian', icon: 'mdi:fish', value: "pescetarian"},
+  {label: 'Nut Free', icon: 'mdi:peanut-off', value: "nut-free"},
+  {label: 'Keto', icon: 'mdi:flash', value: "keto"},
+  {label: 'Paleo', icon: 'mdi:egg', value: "paleo"},
+];
+
+const DIFFICULTY_OPTIONS = [
+  {label: "Easy", value: "easy"},
+  {label: "Medium", value: "medium"},
+  {label: "Hard", value: "hard"},
+]
 
 const showFilter = ref<boolean>(false);
 
@@ -32,27 +43,28 @@ const router = useRouter();
 const route = useRoute();
 
 const filters = ref({
-  difficulty: route.query.difficulty?.toString(),
+  difficulty: Array.isArray(route.query.difficulty) ? route.query.difficulty : [],
   country: route.query.country?.toString(),
   time: route.query.time?.toString(),
   dietary: Array.isArray(route.query.dietary) ? route.query.dietary : [],
 });
 
 const applyFilter = () => {
-  const cleanArray = filters.value.dietary.filter(item => item && item.trim() !== "");
+  const difficultyCleanArray = filters.value.difficulty.filter(item => item && item.trim() !== "");
+  const dietaryCleanArray = filters.value.dietary.filter(item => item && item.trim() !== "");
   router.push({
     query: {
       ...route.query,
       time: filters.value.time || undefined,
       country: filters.value.country || undefined,
-      difficulty: filters.value.difficulty || undefined,
-      dietary: cleanArray.length > 0 ? cleanArray.join(',') : undefined,
+      difficulty: difficultyCleanArray.length > 0 ? difficultyCleanArray.join(',') : undefined,
+      dietary: dietaryCleanArray.length > 0 ? dietaryCleanArray.join(',') : undefined,
     }
   });
 };
 
 const clearFilters = () => {
-  filters.value.difficulty = undefined;
+  filters.value.difficulty = [];
   filters.value.country = undefined;
   filters.value.time = undefined;
   filters.value.dietary = [];
@@ -71,9 +83,27 @@ const setDietary = (dietary: string) => {
   }
 }
 
+const setDifficulty = (difficulty: string) => {
+  if (!difficultyAlreadyInList(difficulty)) {
+    filters.value.difficulty.push(difficulty);
+  } else {
+    const index = filters.value.difficulty.indexOf(difficulty);
+    if (index > -1) {
+      filters.value.difficulty.splice(index, 1);
+    }
+  }
+}
+
 const dietAlreadyInList = (value: string): boolean => {
   return filters.value.dietary.includes(value);
 }
+
+const difficultyAlreadyInList = (value: string): boolean => {
+  return filters.value.difficulty.includes(value);
+}
+
+const scrollContainer = ref<HTMLElement | null>(null);
+useHorizontalScroll(scrollContainer);
 
 </script>
 
@@ -100,135 +130,64 @@ const dietAlreadyInList = (value: string): boolean => {
       -->
       <template #content>
         <!--        Preparation -->
-        <section class="p-5 flex flex-col gap-3 w-full ">
-          <label class="text-sl font-semibold text-primary" for="time-range">Preparation</label>
-          <div class="w-full flex flex-col gap-3 text-gray-400 transition-all text-sm font-bold ">
-
-            <ul class="list-none p-0 grid grid-cols-2 gap-3 text-[0.65rem] text-gray-400 transition-all duration-200 w-full">
-              <li class="w-full">
-                <input id="time-quick" v-model="filters.time" :value="quick" class="peer hidden-dot" name="time-prep"
-                       type="radio">
-                <label
-                    class="grid grid-rows-[90%_10%] gap-1 place-items-center p-3 rounded-lg shadow-sm hover:cursor-pointer hover:bg-primary-medium h-30
-                    peer-checked:bg-primary-dark/20 peer-checked:hover:bg-primary-dark/20"
-                    for="time-quick">
-                  <FastWatch class="max-h-full w-auto aspect-square"/>
-                  <span>{{ quick }} Minutes</span>
-                </label>
-              </li>
-
-              <li class="w-full">
-                <input id="time-standard" v-model="filters.time" :value="standard" class="peer hidden-dot"
-                       name="time-prepdard"
-                       type="radio">
-                <label
-                    class="grid grid-rows-[90%_10%] gap-1 place-items-center p-3 rounded-lg shadow-sm hover:cursor-pointer hover:bg-primary-medium h-30
-                    peer-checked:bg-primary-dark/20 peer-checked:hover:bg-primary-dark/20"
-                    for="time-standard">
-                  <PanIcon class="max-h-full w-auto aspect-square"/>
-                  <span>{{ standard }} Minutes</span>
-                </label>
-              </li>
-
-              <li class="w-full">
-                <input id="time-chef" v-model="filters.time" :value="chef" class="peer hidden-dot" name="time-prep"
-                       type="radio">
-                <label
-                    class="grid grid-rows-[90%_10%] gap-1 place-items-center p-3 rounded-lg shadow-sm hover:cursor-pointer hover:bg-primary-medium h-30
-                    peer-checked:bg-primary-dark/20 peer-checked:hover:bg-primary-dark/20"
-                    for="time-chef">
-                  <ChefHatIcon class="max-h-full w-auto aspect-square"/>
-                  <span>{{ chef }} Minutes</span>
-                </label>
-              </li>
-
-              <li class="w-full">
-                <input id="time-slow" v-model="filters.time" :value="slow" class="peer hidden-dot" name="time-prep"
-                       type="radio">
-                <label
-                    class="grid grid-rows-[90%_10%] gap-1 place-items-center p-3 rounded-lg shadow-sm hover:cursor-pointer hover:bg-primary-medium h-30
-                    peer-checked:bg-primary-dark/20 peer-checked:hover:bg-primary-dark/20"
-                    for="time-slow">
-                  <CakeMakerIcon class="max-h-full w-auto aspect-square"/>
-                  <span>Hours</span>
-                </label>
-              </li>
-            </ul>
+        <section class="p-5 flex flex-col gap-3 w-full">
+          <h3 class="text-lg font-bold leading-tight tracking-[-0.015em] pb-3">Dietary Type</h3>
+          <div class="grid grid-cols-2 gap-3 p-2">
+            <button v-for="option in PREP_OPTIONS"
+                    :key="option.value"
+                    :class="[
+                        'group p-3 border-3 rounded-xl shadow-sm hover:cursor-pointer flex flex-col gap-1 justify-center items-center',
+                filters.time === option.value? 'border bg-primary/20': 'border-transparent bg-white hover:border-gray-200',
+            ]"
+                    @click="filters.time = option.value">
+              <Icon :class="[ 'text-[2rem]',
+                        filters.time === option.value? 'text-gray-selected': 'bg-gray-unselected text-gray-unselected']"
+                    name="material-symbols-light:clock-loader-10"/>
+              <span
+                  :class="['text-sm no-select', filters.time == option.value ? 'text-gray-selected font-bold' : 'text-gray-unselected']">
+                {{ option.label }}</span>
+            </button>
           </div>
         </section>
 
         <!--        Dietary Type-->
-        <section class="p-5 flex flex-col gap-3">
-          <label class="text-sl font-semibold text-primary">Dietary Type</label>
-          <div class="w-full grid grid-cols-2 gap-3 text-gray-400 transition-all text-sm font-bold">
-
-            <button
-                class="flex-1 grid grid-rows-[90%_10%] gap-2 place-items-center p-3 rounded-lg shadow-sm border border-transparent hover:bg-primary-medium h-30"
-                @click="setDietary(DIET_VEGAN)">
-              <SeedlingIcon class="w-full h-full"/>
-              <span>Vegan</span>
+        <section class="p-5 flex flex-col gap-3 w-full">
+          <h3 class="text-lg font-bold leading-tight tracking-[-0.015em] pb-3">Dietary Type</h3>
+          <div ref="scrollContainer"
+               class="flex flex-row flex-nowrap gap-3 p-2 hover-scrollbar overflow-x-auto">
+            <button v-for="option in DIETARY_TYPE_OPTIONS_2"
+                    :key="option.value"
+                    :class="[
+                        'shrink-0 p-3 border-3 rounded-xl shadow-sm hover:cursor-pointer flex flex-col gap-1 justify-center items-center max-h-[5rem] w-[7rem]',
+                dietAlreadyInList(option.value) ? 'border bg-primary/20': 'border-transparent bg-white hover:border-gray-200',
+            ]"
+                    @click="setDietary(option.value)">
+              <Icon
+                  :class="['text-dark-text-default text-3xl', dietAlreadyInList(option.value) ? 'text-gray-selected font-bold' : 'text-gray-unselected']"
+                  :name="option.icon"/>
+              <span
+                  :class="['text-sm no-select', dietAlreadyInList(option.value) ? 'text-gray-selected font-bold' : 'text-gray-unselected']">
+                {{ option.label }}</span>
             </button>
-
-            <button
-                class="flex-1 grid grid-rows-[90%_10%] gap-2 place-items-center p-3 rounded-lg shadow-sm border
-              border-transparent hover:bg-primary-medium h-30"
-                @click="setDietary(DIET_VEGETARIAN)">
-              <CarrotIcon class="w-full h-full"/>
-              <span>Vegetarian</span>
-            </button>
-
-            <button
-                class="flex-1 grid grid-rows-[90%_10%] gap-2 place-items-center p-3 rounded-lg shadow-sm border
-              border-transparent hover:bg-primary-medium h-30"
-                @click="setDietary(DIET_GLUTENFREE)">
-              <GlutenFreeIcon class="w-full h-full"/>
-              <span>Gluten Free</span>
-            </button>
-
-            <button
-                class="flex-1 grid grid-rows-[90%_10%] gap-2 place-items-center p-3 rounded-lg shadow-sm border
-              border-transparent hover:bg-primary-medium h-30"
-                @click="setDietary(DIET_DAIRYFREE)">
-              <DairyFreeIcon class="w-full h-full"/>
-              <span>Dairy Free</span>
-            </button>
-
           </div>
         </section>
 
+
         <!--        Difficulty-->
-        <section class="p-5 flex flex-col gap-3">
-          <label class="text-sl font-semibold text-primary" for="country">Difficulty</label>
-          <div class="w-full relative">
-            <ul class="list-none p-0 flex w-full gap-3">
-              <li class="flex items-center w-full">
-                <input id="easy" v-model="filters.difficulty" class="hidden-dot peer" name="difficulty" type="radio"
-                       value="easy">
-                <label
-                    class="p-2.5 border border-green-600/40 rounded-lg bg-transparent cursor-pointer transition-colors peer-checked:bg-green-100 block text-center w-full"
-                    for="easy">
-                  <span class="text-md text-green-600/70">Easy</span>
-                </label>
-              </li>
-              <li class="flex items-center w-full">
-                <input id="medium" v-model="filters.difficulty" class="hidden-dot peer" name="difficulty" type="radio"
-                       value="medium">
-                <label
-                    class="p-2.5 border border-yellow-600/40 rounded-lg bg-transparent cursor-pointer transition-colors peer-checked:bg-yellow-100 block text-center w-full"
-                    for="medium">
-                  <span class="text-md text-yellow-600/70">Medium</span>
-                </label>
-              </li>
-              <li class="flex items-center w-full">
-                <input id="hard" v-model="filters.difficulty" class="hidden-dot peer" name="difficulty" type="radio"
-                       value="hard">
-                <label
-                    class="p-2.5 border border-red-600/40 rounded-lg bg-transparent cursor-pointer transition-colors peer-checked:bg-red-100 block text-center w-full"
-                    for="hard">
-                  <span class="text-md text-red-600/70">Hard</span>
-                </label>
-              </li>
-            </ul>
+        <section class="p-5 flex flex-col gap-3 w-full">
+          <h3 class="text-lg font-bold leading-tight tracking-[-0.015em] pb-3">Dietary Type</h3>
+          <div class="flex flex-row items-center justify-between gap-3 p-2 w-full rounded-full bg-gray-200">
+            <button v-for="option in DIFFICULTY_OPTIONS"
+                    :key="option.value"
+                    :class="[
+                        'py-3 border-3 rounded-full shadow-sm hover:cursor-pointer flex flex-col gap-1 justify-center items-center w-full',
+                difficultyAlreadyInList(option.value) ? 'border bg-primary/40': 'border-transparent bg-white hover:border-gray-200',
+            ]"
+                    @click="setDifficulty(option.value)">
+                            <span
+                                :class="['text-base no-select', difficultyAlreadyInList(option.value) ? 'text-gray-selected font-bold' : 'text-gray-unselected']">
+                {{ option.label }}</span>
+            </button>
           </div>
         </section>
 
@@ -242,7 +201,7 @@ const dietAlreadyInList = (value: string): boolean => {
       <!--      footer-->
       <template #footer>
         <div class="grid grid-cols-[25%_70%] justify-between font-bold">
-          <button class="p-3 bg-transparent rounded-lg cursor-pointer hover:bg-primary-medium text-gray-500"
+          <button class="p-3 bg-transparent rounded-lg cursor-pointer hover:bg-primary-medium text-dark-text-default"
                   @click="clearFilters">
             Clear All
           </button>
@@ -275,5 +234,4 @@ input[type='number']::-webkit-outer-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
 }
-
 </style>
