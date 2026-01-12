@@ -104,22 +104,42 @@ onBeforeUpdate(() => {
   itemEls.value = [];
 })
 
+const showUpwards = ref(false);
+
+const toggleDropdown = async () => {
+  if (showValues.value) {
+    showValues.value = !showValues.value;
+    return;
+  }
+
+  const rect = dropDownRef.value?.getBoundingClientRect();
+  if (rect) {
+    console.log(rect.bottom)
+    const spaceBelow = window.innerHeight - rect.top;
+    const minExpectedHeight = 200;
+    showUpwards.value = minExpectedHeight > spaceBelow;
+  }
+  showValues.value = !showValues.value;
+};
+
 </script>
 
 <template>
-  <div class="relative select-none cursor-pointer text-md z-99">
+  <div class="relative select-none cursor-pointer text-md z-99 ">
     <div ref="dropDownRef"
          :class="[
-      'relative border-1 border-primary z-10 box-border',
-      showValues ? 'rounded-t-lg' : 'rounded-lg'
+      'relative border-3 shadow-sm z-10 box-border rounded-xl bg-white',
+      showValues && showUpwards ? 'rounded-b-xl border-primary' : '',
+      showValues && !showUpwards ? 'rounded-t-xl rounded-b-none' : '',
+      !showValues ? 'border-transparent' : ''
 
-  ]" @click="showValues =!showValues">
+  ]" @click="toggleDropdown">
       <!--      Dropdown-->
       <div class="grid grid-cols-[9fr_1fr]">
-        <div class="py-2 px-4 whitespace-nowrap text-ellipsis overflow-hidden">
-          {{ currentValue }}
+        <div class="p-4 whitespace-nowrap text-ellipsis overflow-hidden flex justify-start gap-3 text-gray-unselected">
+          <p class="text-gray-selected">{{ currentValue }}</p>
         </div>
-        <div class="flex h-full w-5 right-2 inset-y-0 items-center pointer-events-none z-1 bg-primary-light">
+        <div class="flex h-full w-5 right-2 inset-y-0 items-center pointer-events-none z-1 bg-transparent">
           <IconsDownArrow :class="[
             'transition-transform duration-300 ease-in-out',
             showValues ? 'rotate-180' : 'rotate-0'
@@ -128,25 +148,48 @@ onBeforeUpdate(() => {
       </div>
     </div>
     <!--    List-->
-    <div v-show="showValues"
-         class="absolute top-full right-0 left-0 h-min border-1 border-primary rounded-b-lg  bg-primary-light overflow-y-scroll  box-border">
-      <ul class="flex flex-col max-h-[calc(2.52rem*5)]">
-        <li v-for="value in data"
-            :ref="setItemRef"
-            :class="[
-                'py-2 px-4 hover:bg-primary/10 cursor-pointer',
-                currentValue === value ? 'bg-primary/20' : 'bg-primary-light',
+
+    <Transition name="dropdown">
+      <div v-show="showValues"
+           :class="[
+             'absolute border-3 right-0 left-0 h-min shadow-sm border-primary rounded-xl overflow-y-scroll bg-white box-border text-gray-unselected',
+             showUpwards ? 'bottom-full mb-2' : 'top-full'
+         ]">
+        <ul class="flex flex-col max-h-[calc(3rem*8)] " style="scrollbar-gutter: stable;">
+          <li v-for="value in data"
+              :ref="setItemRef"
+              :class="[
+                'py-3 px-4 hover:bg-gray-light cursor-pointer',
+                currentValue === value ? 'bg-primary/20 text-gray-selected font-bold' : 'bg-white',
                 ]"
-            :data-value="String(value)" @click="currentValue = String(value)">{{ value }}
-        </li>
-      </ul>
-    </div>
+              :data-value="String(value)" @click="currentValue = String(value)">{{ value }}
+          </li>
+        </ul>
+      </div>
+    </Transition>
   </div>
 </template>
 
 <style scoped>
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: all 0.1s ease-in;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.dropdown-enter-from.bottom-full,
+.dropdown-leave-to.bottom-full {
+  transform: translateY(10px);
+}
 
 :scope > div, :scope > div > div {
   box-sizing: border-box;
 }
+
+
 </style>
