@@ -25,6 +25,8 @@
     --dark-default: oklch(0.551 0.027 264.364);
     --gray-light: oklch(0.929 0.013 255.508);
 
+    --red-error: oklch(57.7% 0.245 27.325);
+
 }
 
 @theme {
@@ -37,6 +39,7 @@
     --color-gray-unselected: var(--dark-unselected);
     --color-gray-default: var(--dark-default);
     --color-gray-light: var(--gray-light);
+    --color-red-error: var(--red-error);
 }
 
 @layer utilities {
